@@ -1,5 +1,4 @@
 ﻿using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Support.UI;
 using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
@@ -7,9 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebDriverManager.DriverConfigs.Impl;
-using System.Collections;
-
+using OpenQA.Selenium.Support.UI;
+using NUnit.Framework;
 namespace SeleniumLearning
+
 {
     public class E2ETest
     {
