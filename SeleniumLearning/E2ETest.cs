@@ -43,11 +43,17 @@ namespace SeleniumLearning
             foreach (IWebElement product in productsList)
             {
                 TestContext.Progress.WriteLine(product.FindElement(By.CssSelector(".card-title a")).Text);
+                if (expectedProducts.Contains(product.FindElement(By.CssSelector(".card-title a")).Text))
+                {
+                    product.FindElement(By.CssSelector(".card-footer button")).Click();
+                }
             }
             driver.FindElement(By.PartialLinkText("Checkout")).Click();
-            
-           
-            driver.Quit();
+            IWebElement header = driver.FindElement(By.CssSelector("div.container div.row div.col-sm-12.col-md-10.col-md-offset-1 table.table.table-hover tbody:nth-child(2) tr:nth-child(3) td:nth-child(4) > h3:nth-child(1)"));
+            TestContext.Progress.WriteLine(header.Text);
+            String expected = "Total";
+            Assert.That(header.Text, Is.EqualTo(expected));
+            //driver.Quit();
         }
     }
 }

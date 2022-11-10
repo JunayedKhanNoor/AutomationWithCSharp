@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WebDriverManager.DriverConfigs.Impl;
 using OpenQA.Selenium.Support.UI;
+using NUnit.Framework;
 
 namespace SeleniumLearning
 {
@@ -31,7 +32,7 @@ namespace SeleniumLearning
             SelectElement s = new SelectElement(dropdown);
             s.SelectByText("Teacher");
             s.SelectByValue("consult");
-            s.SelectByIndex(0);
+            s.SelectByIndex(1);
             IList<IWebElement> rdios = driver.FindElements(By.CssSelector("input[type='radio']"));
             //rdios[1].Click();
             foreach(IWebElement radioButton in rdios)
@@ -44,8 +45,8 @@ namespace SeleniumLearning
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(8));
             wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(By.Id("okayBtn")));
             driver.FindElement(By.Id("okayBtn")).Click();
-            bool result = driver.FindElement(By.Id("usertype")).Selected;
-            //Assert.That(result);
+            Boolean result = driver.FindElement(By.Id("usertype")).Selected;
+            //Assert.IsTrue(result);
             Assert.That(result, Is.True);
             //driver.Quit();
         }
