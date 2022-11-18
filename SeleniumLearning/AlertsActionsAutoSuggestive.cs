@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Interactions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +31,52 @@ namespace SeleniumLearning
             String alert_text = driver.SwitchTo().Alert().Text;
             driver.SwitchTo().Alert().Accept();
             StringAssert.Contains(name, alert_text);
+
+        }
+        [Test]
+        public void Ttest_autosuggestive()
+        {
+            driver.FindElement(By.Id("autocomplete")).SendKeys("ind");
+            Thread.Sleep(3000);
+            IList<IWebElement> optionSuggestions = driver.FindElements(By.CssSelector(".ui-menu-item div"));
+            foreach(IWebElement optionSuggestionItem in optionSuggestions)
+            {
+                if (optionSuggestionItem.Text.Equals("India"))
+                {
+                    optionSuggestionItem.Click();
+                }
+            }
+            TestContext.Progress.WriteLine(driver.FindElement(By.Id("autocomplete")).GetAttribute("value"));
+        }
+        [Test]
+        public void test_Action()
+        {
+            /*driver.Url = "https://rahulshettyacademy.com";
+            Actions a = new Actions(driver);
+            a.MoveToElement(driver.FindElement(By.CssSelector("a.dropdown-toggle"))).Perform();
+            Thread.Sleep(3000);
+            driver.FindElement(By.XPath("//ul[@class='dropdown-menu']/li[1]/a")).Click();*/
+
+            driver.Url = " https://demoqa.com/droppable/";
+            Actions a = new Actions(driver);
+            a.DragAndDrop(driver.FindElement(By.Id("draggable")),driver.FindElement(By.Id("droppable"))).Perform();
+            
+        }
+        [Test]
+        public void frames()
+        {
+            //Scroll
+            IWebElement frame = driver.FindElement(By.Id("courses-iframe"));
+            IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+            js.ExecuteScript("arguments[0].scrollIntoView(true);", frame);
+            //Id, Name, Index for iframe detect
+            driver.SwitchTo().Frame("courses-iframe");
+            driver.FindElement(By.LinkText("All Access Plan")).Click();
+            TestContext.Progress.WriteLine(driver.FindElement(By.CssSelector("h1")).Text);
+            driver.SwitchTo().DefaultContent();
            
+            js.ExecuteScript("arguments[0].scrollIntoView(true);", driver.FindElement(By.CssSelector("h1")));
+            TestContext.Progress.WriteLine(driver.FindElement(By.CssSelector("h1")).Text);
         }
     }
 }
