@@ -26,6 +26,10 @@ namespace cSharpSeleniumFramework.utilities
             driver.Manage().Window.Maximize();
             driver.Url = "https://rahulshettyacademy.com/loginpagePractise/";
         }
+        public IWebDriver getDriver()
+        {
+            return driver;
+        }
         public void InitBrowser(string browserName)
         {
             switch (browserName)

@@ -3,6 +3,7 @@ using OpenQA.Selenium.Support.UI;
 using OpenQA.Selenium;
 using WebDriverManager.DriverConfigs.Impl;
 using cSharpSeleniumFramework.utilities;
+using cSharpSeleniumFramework.pageObjects;
 
 namespace cSharpSeleniumFramework
 {
@@ -14,7 +15,8 @@ namespace cSharpSeleniumFramework
         {
             String[] expectedProducts = { "iphone X", "Blackberry" };
             String[] actualProducts = new String[2];
-            driver.FindElement(By.Id("username")).SendKeys("rahulshettyacademy");
+            LoginPage loginPage = new LoginPage(getDriver());
+            loginPage.getUserNAme().SendKeys("rahulshettyacademy");         
             driver.FindElement(By.Name("password")).SendKeys("learning");
             driver.FindElement(By.XPath("//*[@id=\"terms\"]")).Click();
             driver.FindElement(By.CssSelector("input[value='Sign In']")).Click();
