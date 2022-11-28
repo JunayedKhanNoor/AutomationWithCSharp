@@ -27,6 +27,14 @@ namespace cSharpSeleniumFramework.pageObjects
         private IWebElement checkBox;
         [FindsBy(How = How.CssSelector, Using = "input[value='Sign In']")]
         private IWebElement signInButton;
+        public ProductsPage validLogin(string user, string pass)
+        {
+            username.SendKeys(user);
+            password.SendKeys(pass);
+            checkBox.Click();
+            signInButton.Click();
+            return new ProductsPage(driver);
+        }
         public IWebElement getUserNAme()
         {
             return username;

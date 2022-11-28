@@ -13,36 +13,35 @@ namespace cSharpSeleniumFramework
         [Test]
         public void EndToEndFlow()
         {
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(8));
             String[] expectedProducts = { "iphone X", "Blackberry" };
             String[] actualProducts = new String[2];
             LoginPage loginPage = new LoginPage(getDriver());
-            loginPage.getUserNAme().SendKeys("rahulshettyacademy");         
-            driver.FindElement(By.Name("password")).SendKeys("learning");
-            driver.FindElement(By.XPath("//*[@id=\"terms\"]")).Click();
-            driver.FindElement(By.CssSelector("input[value='Sign In']")).Click();
-
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(8));
-            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.
-                ElementIsVisible(By.PartialLinkText("Checkout")));
-            IList<IWebElement> productsList = driver.FindElements(By.TagName("app-card"));
+            ProductsPage productsPage = loginPage.validLogin("rahulshettyacademy", "learning");
+            productsPage.waitForPageDisplay();
+           
+            IList<IWebElement> productsList = productsPage.getCards();
             TestContext.Progress.WriteLine(productsList.Count);
             foreach (IWebElement product in productsList)
             {
-                TestContext.Progress.WriteLine(product.FindElement(By.CssSelector(".card-title a")).Text);
-                if (expectedProducts.Contains(product.FindElement(By.CssSelector(".card-title a")).Text))
+                TestContext.Progress.WriteLine(product.FindElement(productsPage.getCardTitle()).Text);
+                if (expectedProducts.Contains(product.FindElement(productsPage.getCardTitle()).Text))
                 {
-                    product.FindElement(By.CssSelector(".card-footer button")).Click();
+                    product.FindElement(productsPage.addToCartButton()).Click();
                 }
             }
-            driver.FindElement(By.PartialLinkText("Checkout")).Click();
+            CheckoutPage checkoutPage = productsPage.checkout();
            
-            IList<IWebElement> checkoutCards = driver.FindElements(By.CssSelector("h4 a"));
+            IList<IWebElement> checkoutCards = checkoutPage.getCards();
             for (int i = 0; i < checkoutCards.Count; i++)
             {
                 actualProducts[i] = checkoutCards[i].Text;
             }
             Assert.That(actualProducts, Is.EqualTo(expectedProducts));
-            driver.FindElement(By.CssSelector(".btn-success")).Click();
+            checkoutPage.checkOut();
+
+
+
             driver.FindElement(By.Id("country")).SendKeys("ind");
             wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.LinkText("India")));
             driver.FindElement(By.LinkText("India")).Click();
