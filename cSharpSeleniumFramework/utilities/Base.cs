@@ -14,7 +14,8 @@ namespace cSharpSeleniumFramework.utilities
 {
     public class Base
     {
-        public IWebDriver driver;
+        //public IWebDriver driver;
+        public ThreadLocal<IWebDriver> driver = new ThreadLocal<IWebDriver>();
         [SetUp]
         public void StartBrowser()
         {
@@ -22,13 +23,13 @@ namespace cSharpSeleniumFramework.utilities
             String browserName = ConfigurationManager.AppSettings["browser"];
             InitBrowser(browserName);
             //Implicit TimeOut
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
-            driver.Manage().Window.Maximize();
-            driver.Url = "https://rahulshettyacademy.com/loginpagePractise/";
+            driver.Value.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+            driver.Value.Manage().Window.Maximize();
+            driver.Value.Url = "https://rahulshettyacademy.com/loginpagePractise/";
         }
         public IWebDriver getDriver()
         {
-            return driver;
+            return driver.Value;
         }
         public void InitBrowser(string browserName)
         {
@@ -36,23 +37,27 @@ namespace cSharpSeleniumFramework.utilities
             {
                 case "Firefox":
                     new WebDriverManager.DriverManager().SetUpDriver(new FirefoxConfig());
-                    driver = new FirefoxDriver();
+                    driver.Value = new FirefoxDriver();
                     break;
                 case "Chrome":
                     new WebDriverManager.DriverManager().SetUpDriver(new ChromeConfig());
-                    driver = new ChromeDriver();
+                    driver.Value = new ChromeDriver();
                     break;
                 case "Edge":
                     new WebDriverManager.DriverManager().SetUpDriver(new EdgeConfig());
-                    driver = new EdgeDriver();
+                    driver.Value = new EdgeDriver();
                     break;
                  
             }
         }
+        public static jsonReader getDataParser()
+        {
+            return new jsonReader();
+        }
         [TearDown]
         public void AfterTest()
         {
-            driver.Quit();
+            driver.Value.Quit();
         }
     }
 }

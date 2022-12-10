@@ -11,6 +11,7 @@ using WebDriverManager.DriverConfigs.Impl;
 
 namespace SeleniumLearning
 {
+    [Parallelizable(ParallelScope.Self)]
     public class SortWebTables
     {
         IWebDriver driver;

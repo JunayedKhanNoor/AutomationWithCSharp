@@ -10,6 +10,7 @@ using WebDriverManager.DriverConfigs.Impl;
 
 namespace SeleniumLearning
 {
+    [Parallelizable(ParallelScope.Self)]
     public class WindowHandelers
     {
         IWebDriver driver;
