@@ -85,7 +85,9 @@ namespace cSharpSeleniumFramework.utilities
             String fileName = "Screenshot_" + time.ToString("h_mm_ss") + ".png";
             if(status == NUnit.Framework.Interfaces.TestStatus.Failed)
             {
-                test.Fail("Test Failed");
+                //test.Fail("Test Failed" + stackTrese);
+                test.Fail("Test Failed", CaptureScreenShot(driver.Value, fileName));
+                test.Log(Status.Fail, "Test Failed" + stackTrese);
                 //test.Log(status.Fail, "Test Failed" + stackTrese );
             }
             else if (status == NUnit.Framework.Interfaces.TestStatus.Passed)
@@ -95,11 +97,11 @@ namespace cSharpSeleniumFramework.utilities
             extent.Flush();
             driver.Value.Quit();
         }
-       /* public captureScreenShot(IWebDriver driver , String ScreenShotName)
+        public MediaEntityModelProvider CaptureScreenShot(IWebDriver driver , String ScreenShotName)
         {
             ITakesScreenshot screenshot = (ITakesScreenshot)driver;
             var picture = screenshot.GetScreenshot().AsBase64EncodedString;
-            MediaEntityBuilder.CreateScreenCaptureFromBase64String(screenshot, ScreenShotName).Build();
-        }*/
+            return MediaEntityBuilder.CreateScreenCaptureFromBase64String(picture, ScreenShotName).Build();
+        }
     }
 }
