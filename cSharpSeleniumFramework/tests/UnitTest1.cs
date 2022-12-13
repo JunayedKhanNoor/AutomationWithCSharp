@@ -14,6 +14,8 @@ namespace cSharpSeleniumFramework
         // Comand to run test
         //dotnet test pathto.csproj (To run all test)
         //dotnet test pathto.csproj --filter TestCategory=Smoke
+        //dotnet test cSharpSeleniumFramework.csproj --filter TestCategory=Smoke -- TestRunParameters.Parameter\(name=\"browserName\",value=\"Firefox\")
+
         [Test,TestCaseSource("AddTestDataConfig"),Category("Regrassion")]
         //[TestCase("rahulshettyacademy", "learning")]
         //[TestCase("rahulshettyemy", "learning")]
@@ -51,7 +53,7 @@ namespace cSharpSeleniumFramework
 
             driver.Value.FindElement(By.Id("country")).SendKeys("ind");
             wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.LinkText("India")));
-            driver.Value.FindElement(By.LinkText("India")). Click();
+            driver.Value.FindElement(By.LinkText("India")).Click();
             driver.Value.FindElement(By.XPath("//label[@for='checkbox2']")).Click();
             driver.Value.FindElement(By.CssSelector("input[value='Purchase']")).Click();
             String confirmText = driver.Value.FindElement(By.CssSelector(".alert-success")).Text;
